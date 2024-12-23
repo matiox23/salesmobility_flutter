@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_app_users/blocs/blocs.dart';
 import 'package:flutter_app_users/blocs/internet_connection/bloc/internet_bloc.dart';
 import 'package:flutter_app_users/models/parametros_agente_model.dart';
+import 'package:flutter_app_users/presentation/screens/ClienteProspecto/cliente_prospecto_screen.dart';
 import 'package:flutter_app_users/presentation/screens/Tabs/tab_fuera_ruta.dart';
 import 'package:flutter_app_users/presentation/screens/Tabs/tab_inventario.dart';
 import 'package:flutter_app_users/presentation/screens/Tabs/tab_map.dart';
@@ -178,14 +179,15 @@ class _MainScreenState extends State<MainScreen> {
             ],
           ),
           body: const TabBarView(
-            physics: NeverScrollableScrollPhysics(),
+            // Impide el desplazamiento horizontal
+            // physics: NeverScrollableScrollPhysics(),
             children: [
               TabResumenDiario(),
               TabRutaDiaria(),
               TabInventario(),
               TabMap(),
               TabFueraRuta(),
-              TabPedidos()
+              TabPedidos(),
             ],
           ),
           drawer: const MyNavigationDrawer(),
@@ -278,8 +280,23 @@ class _MainScreenState extends State<MainScreen> {
   }
 }
 
-class MyNavigationDrawer extends StatelessWidget {
+class MyNavigationDrawer extends StatefulWidget {
   const MyNavigationDrawer({super.key});
+
+  @override
+  State<MyNavigationDrawer> createState() => _MyNavigationDrawerState();
+}
+
+class _MyNavigationDrawerState extends State<MyNavigationDrawer> {
+  int _selectedIndex = 0; // Índice del elemento seleccionado
+  void _onItemTapped(int index, String routeName) {
+    setState(() {
+      _selectedIndex = index; // Actualiza el índice seleccionado
+    });
+
+    Navigator.pop(context); // Cierra el Drawer
+    Navigator.pushNamed(context, routeName); // Navega a la ruta seleccionada
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -357,19 +374,96 @@ class MyNavigationDrawer extends StatelessWidget {
   }
 
   Widget _myMenuItems(BuildContext context) {
+    // Índice del elemento seleccionado
+
     return Column(
       children: [
         ListTile(
-          leading: const Icon(Icons.home),
-          title: const Text('Inicio'),
+          leading: Icon(
+            Icons.home_filled,
+            color: _selectedIndex == 0 ? Colors.blueAccent : Colors.black,
+          ),
+          title: Text(
+            'Inicio',
+            style: TextStyle(
+                color: _selectedIndex == 0 ? Colors.blue : Colors.black),
+          ),
           onTap: () {
-            Navigator.pop(context);
-            //Navigator.pushNamed(context, MainScreen.routeName);
+            _onItemTapped(0, MainScreen.routeName);
+            // Navigator.pop(context);
+            // Navigator.pushNamed(context, MainScreen.routeName);
           },
         ),
         ListTile(
-          leading: const Icon(Icons.monetization_on),
-          title: const Text('Módulo de Precios'),
+          leading: Icon(
+            Icons.person,
+            color: _selectedIndex == 1 ? Colors.blueAccent : Colors.black,
+          ),
+          title: Text('Cliente / Prospecto',
+              style: TextStyle(
+                  color:
+                      _selectedIndex == 1 ? Colors.blueAccent : Colors.black)),
+          onTap: () {
+            _onItemTapped(1, ClienteProspectoScreen.routeName);
+            // Navigator.pop(context);
+            // Navigator.pushNamed(context, HomeScreen.routeName);
+          },
+        ),
+        const Divider(
+          height: 0,
+        ),
+        ListTile(
+          leading: const Icon(
+            Icons.calendar_month_outlined,
+            color: Colors.red,
+          ),
+          title: const Text('Planifica Ruta'),
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.pushNamed(context, HomeScreen.routeName);
+          },
+        ),
+        ListTile(
+          leading: const Icon(
+            Icons.history,
+            color: Color.fromARGB(255, 17, 0, 255),
+          ),
+          title: const Text('Historico de Movilidad'),
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.pushNamed(context, HomeScreen.routeName);
+          },
+        ),
+        ListTile(
+          leading: const Icon(
+            Icons.monetization_on,
+            color: Colors.green,
+          ),
+          title: const Text(
+            'Módulo de Precios',
+          ),
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.pushNamed(context, HomeScreen.routeName);
+          },
+        ),
+        ListTile(
+          leading: const Icon(
+            Icons.account_balance_wallet,
+            color: Colors.deepOrange,
+          ),
+          title: const Text('Estado de Cuenta'),
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.pushNamed(context, HomeScreen.routeName);
+          },
+        ),
+        ListTile(
+          leading: const Icon(
+            Icons.folder,
+            color: Colors.amber,
+          ),
+          title: const Text('Mi Espacio'),
           onTap: () {
             Navigator.pop(context);
             Navigator.pushNamed(context, HomeScreen.routeName);
@@ -377,7 +471,18 @@ class MyNavigationDrawer extends StatelessWidget {
         ),
         const Divider(
           height: 0,
-        )
+        ),
+        ListTile(
+          leading: const Icon(
+            Icons.settings,
+            color: Colors.grey,
+          ),
+          title: const Text('Configuración'),
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.pushNamed(context, HomeScreen.routeName);
+          },
+        ),
       ],
     );
   }

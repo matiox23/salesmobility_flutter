@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_users/blocs/internet_connection/bloc/internet_bloc.dart';
+import 'package:flutter_app_users/presentation/screens/ClienteProspecto/cliente_prospecto_screen.dart';
 import 'package:flutter_app_users/presentation/screens/screens.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,6 +33,8 @@ class MyApp extends StatelessWidget {
           LoadConfigScreen.routeName: (_) => const LoadConfigScreen(),
           LoginScreen.routeName: (_) => const LoginScreen(),
           HomeScreen.routeName: (_) => const HomeScreen(),
+          ClienteProspectoScreen.routeName: (_) =>
+              const ClienteProspectoScreen(),
           PrecioScreen.routeName: (_) => const PrecioScreen(),
           MainScreen.routeName: (_) => const MainScreen(),
           ChannelMapScreen.routeName: (_) => const ChannelMapScreen(),
